@@ -43,8 +43,10 @@ namespace SalesWebMvc
                     options.UseMySql(Configuration.GetConnectionString("SalesWebMvcContext"), builder =>
 builder.MigrationsAssembly("SalesWebMvc")));
 
+            // Registro dos Services no Container
             services.AddScoped<SeedingService>();
             services.AddScoped<SellerService>();
+            services.AddScoped<DepartmentService>();
         }
 
         // Este método é chamado pelo tempo de execução. 
