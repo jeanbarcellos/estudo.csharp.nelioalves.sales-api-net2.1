@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SalesWebMvc.Models;
 using SalesWebMvc.Models.ViewModels;
 
 namespace SalesWebMvc.Controllers
@@ -13,7 +9,13 @@ namespace SalesWebMvc.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            Dictionary<string, object> viewData = new Dictionary<string, object>();
+            viewData["name"] = "Bem-vindo ao Teste API REST JSON";
+            viewData["author"] = "jean.barcellos@hevo.com.br";
+            viewData["inteiros"] = 1;
+            viewData["double"] = 2.98;
+
+            return Json(viewData);
         }
 
         public IActionResult About()
@@ -21,25 +23,27 @@ namespace SalesWebMvc.Controllers
             ViewData["Message"] = "Salles Web MVC App from C# Course.";
             ViewData["Professor"] = "Nélio Alves";
 
-            return View();
+            return Json(ViewData);
         }
 
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
 
-            return View();
+            return Json(ViewData);
         }
 
         public IActionResult Privacy()
         {
-            return View();
+            ViewData["Message"] = "Use this page to detail your site's privacy policy.";
+
+            return Json(ViewData);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return Json(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
