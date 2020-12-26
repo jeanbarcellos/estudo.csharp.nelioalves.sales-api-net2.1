@@ -17,6 +17,11 @@ namespace SalesWebMvc.Services
             _context = context;
         }
 
+        public async Task<Seller> FindAsync(int id)
+        {
+            return await _context.Seller.FindAsync(id);
+        }
+
         public async Task<List<Seller>> FindAllAsync()
         {
             return await _context.Seller.ToListAsync();
@@ -38,11 +43,18 @@ namespace SalesWebMvc.Services
             try
             {
                 var obj = await _context.Seller.FindAsync(id);
+
+                if (obj == null)
+                {
+                    throw new NotFoundException("Id not found");
+                }
+
                 _context.Seller.Remove(obj);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException e)
             {
+                // Não é possível excluir o vendedor porque ele / ela tem vendas
                 throw new IntegrityException("Can't delete seller because he/she has sales");
             }
         }
@@ -50,10 +62,12 @@ namespace SalesWebMvc.Services
         public async Task UpdateAsync(Seller obj)
         {
             bool hasAny = await _context.Seller.AnyAsync(x => x.Id == obj.Id);
+
             if (!hasAny)
             {
                 throw new NotFoundException("Id not found");
             }
+
             try
             {
                 _context.Update(obj);
@@ -63,6 +77,11 @@ namespace SalesWebMvc.Services
             {
                 throw new DbConcurrencyException(e.Message);
             }
+        }
+
+        public bool SellerExists(int id)
+        {
+            return _context.Seller.Any(e => e.Id == id);
         }
     }
 }
