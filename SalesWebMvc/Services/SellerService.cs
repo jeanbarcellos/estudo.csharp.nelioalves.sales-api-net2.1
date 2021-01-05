@@ -52,7 +52,7 @@ namespace SalesWebMvc.Services
                 _context.Seller.Remove(obj);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateException e)
+            catch (DbUpdateException)
             {
                 // Não é possível excluir o vendedor porque ele / ela tem vendas
                 throw new IntegrityException("Can't delete seller because he/she has sales");
