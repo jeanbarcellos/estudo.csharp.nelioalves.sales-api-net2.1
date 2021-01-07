@@ -91,13 +91,6 @@ namespace SalesWebMvc
             // Middleware para redirecionar solicitações HTTP para HTTPS.
             app.UseHttpsRedirection();
 
-            // Middleware para ativar o envio de arquivo estático para o caminho da solicitação atual.
-            // Permite que os arquivos estáticos sejam atendidos
-            app.UseStaticFiles();
-
-            // Middleware para ativa os recursos de política de cookies
-            app.UseCookiePolicy();
-
             // Adiciona MVC ao pipeline de execução de solicitação Microsoft.AspNetCore.Builder.IApplicationBuilder
             app.UseMvc(routes =>
             {
