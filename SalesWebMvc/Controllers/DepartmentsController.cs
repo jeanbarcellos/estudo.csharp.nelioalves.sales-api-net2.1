@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +16,12 @@ namespace SalesWebMvc.Controllers
         }
 
         // GET: Departments
+        // public async Task<List<Department>> Index()
         public async Task<IActionResult> Index()
         {
-            return Json(await _context.Department.ToListAsync());
+            var list = await _context.Department.ToListAsync();
+
+            return Json(list);
         }
 
         // GET: Departments/Details/5
@@ -27,7 +29,7 @@ namespace SalesWebMvc.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return BadRequest(new { message = "Id not provided" });
             }
 
             var department = await _context.Department
@@ -35,7 +37,7 @@ namespace SalesWebMvc.Controllers
 
             if (department == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Id not found" });
             }
 
             return Ok(department);
@@ -45,17 +47,17 @@ namespace SalesWebMvc.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Department department)
         {
-            Console.WriteLine(department);
-
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(department);
-                await _context.SaveChangesAsync();
-
-                return Created("", department);
+                return BadRequest();
             }
 
-            return BadRequest();
+            _context.Add(department);
+            await _context.SaveChangesAsync();
+
+            // Um objeto Department é fornecido no corpo da resposta, juntamente com um cabeçalho de resposta Location contendo a URL do produto recém-criado.
+            // return CreatedAtAction(nameof(Details), new { id = department.Id }, department);
+            return Created(department.Id.ToString(), department);
         }
 
         // PUT: Departments/Edit/5
@@ -67,31 +69,34 @@ namespace SalesWebMvc.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
+                return BadRequest();
+            }
+
+            try
+            {
+                _context.Update(department);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!DepartmentExists(department.Id))
                 {
-                    _context.Update(department);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!DepartmentExists(department.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
             }
+
             return Ok(department);
         }
 
         // DELETE: Departments/Delete/5
-        [HttpDelete, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
         {
             var department = await _context.Department.FindAsync(id);
 

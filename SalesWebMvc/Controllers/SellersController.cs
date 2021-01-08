@@ -65,7 +65,9 @@ namespace SalesWebMvc.Controllers
 
             await _sellerService.InsertAsync(seller);
 
-            return Ok(seller);
+            // return Ok(seller);
+            return CreatedAtAction(nameof(Details), new { id = seller.Id }, seller);
+            //return Created(seller.Id.ToString(), seller);
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -143,6 +145,7 @@ namespace SalesWebMvc.Controllers
             try
             {
                 await _sellerService.UpdateAsync(seller);
+
                 return Ok(seller);
             }
             catch (ApplicationException e)
