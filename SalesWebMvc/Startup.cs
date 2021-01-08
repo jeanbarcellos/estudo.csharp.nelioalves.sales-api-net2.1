@@ -23,8 +23,7 @@ namespace SalesWebMvc
 
         public IConfiguration Configuration { get; }
 
-        // Este método é chamado pelo tempo de execução.
-        // Use este método para adicionar serviços ao contêiner.
+        // Adicionar serviços ao contêiner.
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
@@ -49,8 +48,7 @@ namespace SalesWebMvc
             services.AddScoped<SalesRecordService>();
         }
 
-        // Este método é chamado pelo tempo de execução.
-        // Use este método para configurar o pipeline de solicitação HTTP.
+        // Configurar o pipeline de solicitação HTTP.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, SeedingService seedingService)
         {
             var enUS = new CultureInfo("en-US");
