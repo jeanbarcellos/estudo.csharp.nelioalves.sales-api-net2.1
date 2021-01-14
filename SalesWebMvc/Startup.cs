@@ -2,7 +2,6 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
@@ -26,13 +25,6 @@ namespace SalesWebMvc
         // Adicionar serviços ao contêiner.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // Este lambda determina se o consentimento do usuário para cookies não essenciais é necessário para uma determinada solicitação.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
             // Define o Microsoft.AspNetCore.Mvc.CompatibilityVersion para ASP.NET Core MVC para o aplicativo.
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
