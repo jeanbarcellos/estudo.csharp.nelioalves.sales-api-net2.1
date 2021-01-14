@@ -1,4 +1,4 @@
-# Projeto: Sistema Web com ASP .NET Core MVC e Entity Framework
+# Projeto: Sistema Web com ASP .NET Core MVC e Entity Framework (NET 2.1)
 
 [Udemy](https://www.udemy.com/course/programacao-orientada-a-objetos-csharp/)
 
